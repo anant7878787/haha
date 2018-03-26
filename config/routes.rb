@@ -2,5 +2,10 @@ Rails.application.routes.draw do
     devise_for :users, controllers: {
         :registrations => "users/registrations"
       }
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
+      # resources :users
+      resources :accounts
+      resources :invitations
+  		post 'invitations/get_user_mail'
+  		get 'check' => 'invitations#check_email'
+   	  	root "accounts#index"
 end

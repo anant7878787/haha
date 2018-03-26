@@ -4,6 +4,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
     has_many :accounts, dependent: :destroy 
-    accepts_nested_attributes_for :accounts, reject_if: proc { |attributes| attributes['name'].blank? }, allow_destroy: true
+    accepts_nested_attributes_for :accounts
  	#validates :email, :password, presence: true
+
+
+ 	after_create :populate_invites
+
+	def populate_invites
+	end 	
 end

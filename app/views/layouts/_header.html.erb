@@ -1,0 +1,13 @@
+<nav class="navbar navbar-expand-sm bg-light">
+  <ul class="navbar-nav">
+    <li class="nav-item">
+      <% if user_signed_in? %>
+           <li><%= link_to "Sign Out",  destroy_user_session_path, method: :delete, class: "active" %></li>
+        <% else %>
+          <li><%= link_to "Sign Up", new_user_registration_path, class: "active" %></li>
+          <li><%= link_to "Sign In", new_user_session_path, class: "active" %></li>
+        <% end %>
+      <a class="nav-link" href="#">MPM</a>
+    </li>
+  </ul>
+</nav>
