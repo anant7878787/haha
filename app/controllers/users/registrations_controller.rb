@@ -7,8 +7,20 @@ class Users::RegistrationsController < Devise::RegistrationsController
   
 
   def new
+
     @user = User.new
     @account = @user.accounts.build
+  end
+
+  def create
+    super
+    if params[:account_id].present?
+      @acc_id = params[:account_id]
+      @user = User.last 
+      @invitation = Invitation.new(account_id: @acc_id, user_id: @user.id, user_email: @user.email)
+      @invitation.save
+    else
+    end
   end
 
 
