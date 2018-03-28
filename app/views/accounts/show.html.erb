@@ -1,0 +1,55 @@
+<h1>Your Account show page</h1>
+<div class="row text-center grid3">
+  <div class="col-md-4">
+        <h3>Account name</h3>
+        <p><%= @account.account_name %></p>
+  </div>
+  <div class="col-md-4">
+        <h3>User List</h3>   
+  <% @users.each do |u| %>
+  <p><%= u.user_email %></p>
+  <%end%>
+  </div>
+  <div class="col-md-4">Add User</div>
+  <% if check_for_add_users(current_user.id) == true %>
+  <% debugger %>
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Users</button>
+  <%else%>
+  <%end%>
+  </div>
+
+
+
+<div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+                <!-- Modal content-->
+                                <div class="modal-content">
+                                        <div class="modal-header col-md-2">
+                                                <h4 class="modal-title">Modal Header</h4>
+                                        </div>
+                                        <%= form_for :invitation, url: invitations_get_user_mail_path do |form| %>
+                                                <div class="modal-body">
+                                                        <div class="field">
+                                                                <div class = "col-md-2" >
+                                                                        <%= form.label :email %>
+                                                                        <%= form.email_field :user_email %>
+                                                                        <%= form.hidden_field :account_id, :value => @account.id %>
+                                                                        <%= form.submit "Invite" %>
+                                                                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                </div>
+                                                        </div>
+                                                </div>
+                                        <% end %>
+                                </div>
+                        </div>
+                        
+                </div>
+<style>
+.grid3 >div{
+  height: 400px;
+  background: white;
+  float: none;
+  display: inline-block;
+  background-clip: content-box
+}
+</style>

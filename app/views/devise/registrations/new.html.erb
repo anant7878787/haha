@@ -1,9 +1,11 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
 
-  <%= hidden_field_tag :account_id, params[:acco_id]  %>
+  <%= f.hidden_field :account_id1,:value => params[:acco_id]  %>
+  <%= f.hidden_field :user_email1,:value => params[:emaill]  %>
+  
   <div class="container well">
-    <div class="row">
+    <div class="row">  
       <div class="col-md-8">
       <%if params[:emaill].present? %>
         <div class="form-group">
@@ -19,13 +21,18 @@
           <%= f.label :email %><br />
           <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
         </div>
-          <%= f.fields_for :accounts do |acc| %>
+          
             <div class="form-group">
-              <%= acc.label :account_name %><br />
-              <%= acc.text_field :account_name, autofocus: true, autocomplete: "off", class: "form-control" %>
+              <%= f.label :account_name %><br />
+              <%= f.text_field :account_name, autofocus: true, autocomplete: "off", class: "form-control" %>
             </div>
-          <% end %>
+          
         <%end%>
+         <div class="form-group">
+          <%= f.label :name %><br />
+          <%= f.text_field :name,  autofocus: true, autocomplete: "off", class: "form-control" %>
+          <!-- text_field :ecard, :sender, :value => 'contact@host.com' -->
+        </div>
         <div class="form-group">
           <%= f.label :password %>
           <% if @minimum_password_length %>

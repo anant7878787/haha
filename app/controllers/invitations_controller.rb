@@ -2,6 +2,7 @@ class InvitationsController < ApplicationController
 
 
 	def get_user_mail
+       
 		@email = valid_params[:user_email]
 		@account_id = valid_params[:account_id]
 
@@ -21,6 +22,7 @@ class InvitationsController < ApplicationController
     
 
     def check_email
+        
     	check = User.find_by(email: params[:user_email])
         email = params[:user_email]
         account_id = params[:account_id]

@@ -1,11 +1,13 @@
 <h2><strong>OWNER ACCOUNT</strong></h2>
 	<div class = "container">
+		<% @account.each do |acc| %>
 		<div class="row jumbotron">
 			<div class = "col-md-6" >
 				<h1> Account Details </h1>
-				<% @account.each do |acc| %>
+				
 					<div class="col-sm-6 col-md-3">
-						<h3><%= acc.account_name %></h3>
+						
+					<p><%= link_to acc.account_name, account_path(acc.id) %></p>
 					</div>
 			</div>
 			

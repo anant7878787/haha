@@ -6,22 +6,22 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   
 
-  def new
+  # def new
 
-    @user = User.new
-    @account = @user.accounts.build
-  end
+  #   @user = User.new
+  #   # @account = @user.accounts.build
+  # end
 
-  def create
-    super
-    if params[:account_id].present?
-      @acc_id = params[:account_id]
-      @user = User.last 
-      @invitation = Invitation.new(account_id: @acc_id, user_id: @user.id, user_email: @user.email)
-      @invitation.save
-    else
-    end
-  end
+  # def create
+  #   super 
+  #   if params[:account_id].present?
+  #     @acc_id = params[:account_id]
+  #     @user = User.last 
+  #     debugger
+  #     @invitation = Invitation.where("account_id = ? AND user_email = ?", @acc_id, @user.email).update(user_id: @user.id)
+  #   else
+  #   end
+  # end
 
 
   # If you have extra params to permit, append them to the sanitizer.
