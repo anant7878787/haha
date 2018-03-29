@@ -18,5 +18,4 @@ class User < ApplicationRecord
    		Account.create(user_id: self.id , account_name: account_name)
  	end
  	end	
-end
- 
+end 

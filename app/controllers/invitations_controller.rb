@@ -9,20 +9,28 @@ class InvitationsController < ApplicationController
         check = User.find_by(email: @email)
         
         if check == nil
-            @invitation = Invitation.new(account_id: @account_id, user_email: @email)
-            @invitation.save
+            debugger
+            @invitation = Invitation.create(account_id: @account_id, user_email: @email)
+            UserMailer.invitation_send(@email, @account_id).deliver_now
+            redirect_to accounts_path
         else
-            @invitation = Invitation.new(account_id: @account_id, user_id: check.id, user_email: @email)
-            @invitation.save
+            begin
+                @invitation = Invitation.create(account_id: @account_id, user_id: check.id, user_email: @email)
+                
+                UserMailer.invitation_send(@email, @account_id).deliver_now
+                redirect_to accounts_path
+
+            rescue
+                puts "error"
+                redirect_to accounts_path
+            end
         end
 
-	       UserMailer.invitation_send(@email, @account_id).deliver_now
-	       redirect_to accounts_path
     end
     
 
-    def check_email
-        
+    def check_email 
+       
     	check = User.find_by(email: params[:user_email])
         email = params[:user_email]
         account_id = params[:account_id]

@@ -9,6 +9,7 @@ module ApplicationHelper
 	# end
 
 	def check_for_add_users(user_id)
+		
 		check = Account.find_by(user_id: user_id)
 		if check == nil
 			return false

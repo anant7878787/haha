@@ -1,13 +1,12 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
-
   <%= f.hidden_field :account_id1,:value => params[:acco_id]  %>
   <%= f.hidden_field :user_email1,:value => params[:emaill]  %>
   
   <div class="container well">
     <div class="row">  
       <div class="col-md-8">
-      <%if params[:emaill].present? %>
+      <%if params[:emaill].present? %> 
         <div class="form-group">
           <h2>Sign up</h2>
       
