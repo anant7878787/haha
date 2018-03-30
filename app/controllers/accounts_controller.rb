@@ -21,14 +21,17 @@ class AccountsController < ApplicationController
 
 	def show
     @usr = Array.new
-		@userdetails = Array.new
     @account = Account.find(params[:id])
-		@users = Invitation.where(account_id: @account.id)
-      @usr.push(@users)
-      debugger
-
-    @userdetails = User.where(id: @usr.user_id)
-		
+		@invitations = Invitation.where(account_id: @account.id)
+    @invitations.each do |inv|
+      if inv.user_id.present?
+        urs_id = inv.user_id
+        user1 = User.find_by(id: urs_id)
+        @usr.push(user1)
+      else
+      end
+    end
+    # @userdetails = User.where(id: @usr.user_id)
 	end
 
 	def create

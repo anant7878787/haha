@@ -11,7 +11,7 @@ class User < ApplicationRecord
 	after_create :create_user
  	private
  	def create_user
- 		
+ 		 
  		if account_id1.present? && user_email1.present?
  			@invitation = Invitation.where("account_id = ? AND user_email = ?", account_id1, user_email1).update(user_id: self.id)
  		else

@@ -4,8 +4,8 @@ Rails.application.routes.draw do
       }
       # resources :users
       resources :accounts
-      resources :invitations
+      resources :invitations 
   		post 'invitations/get_user_mail'
   		get 'check' => 'invitations#check_email'
    	  	root "accounts#index"
-end
+end 
