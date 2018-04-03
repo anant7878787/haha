@@ -7,4 +7,3 @@ class CreateInvitations < ActiveRecord::Migration[5.1]
       add_index :invitations,[:user_email, :account_id], unique:true
   end
 end
-x

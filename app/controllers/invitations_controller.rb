@@ -2,6 +2,7 @@ class InvitationsController < ApplicationController
 
 
 	def get_user_mail
+        
         @email = valid_params[:user_email]
 		@account_id = valid_params[:account_id]
         check = User.find_by(email: @email)
@@ -15,7 +16,6 @@ class InvitationsController < ApplicationController
                 UserMailer.invitation_send(@email, @account_id).deliver_now
                 redirect_to accounts_path
             rescue
-               
                 redirect_to account_path(@account_id), alert: "This User is already exist in your team"
             end
         end

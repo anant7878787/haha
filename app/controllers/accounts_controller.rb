@@ -2,24 +2,33 @@ class AccountsController < ApplicationController
 
 
 	def index
-	  @account = Account.where(user_id: current_user.id)
-		user_id = current_user.id
-    check_for_account = Account.find_by(user_id: user_id)
+        @invited_accounts = Array.new
+        @invitations = Invitation.where(user_id: current_user.id)
+        @invitations.each do |invitation|
+            account = Account.find_by(id: invitation.account_id)
+            @invited_accounts.push(account)
+        end
+       @owner_accounts = Account.where(user_id: current_user.id)
+       @accounts= @invited_accounts|@owner_accounts
+    end
+	 #  @account = Account.where(user_id: current_user.id)
+		# user_id = current_user.id
+  #   check_for_account = Account.find_by(user_id: user_id)
    
-        if check_for_account == nil
-        	@invitations = Invitation.where(user_id: user_id)
-          @account = Array.new
-          @invitations.each do |invitation|
-            acc_id = invitation.account_id
-            account = Account.find_by(id: acc_id)
-            @account.push(account)
-          end
-        else	
-          @account = Account.where(user_id: current_user.id)
-		    end
-	end
+  #       if check_for_account == nil
+  #       	@invitations = Invitation.where(user_id: user_id)
+  #         @account = Array.new
+  #         @invitations.each do |invitation|
+  #           acc_id = invitation.account_id
+  #           account = Account.find_by(id: acc_id)
+  #           @account.push(account)
+  #         end
+  #       else	
+  #         @account = Account.where(user_id: current_user.id)
+		#     end
 
-	def show
+    def show
+        @teams = Team.all
     @usr = Array.new
     @account = Account.find(params[:id])
 		@invitations = Invitation.where(account_id: @account.id)

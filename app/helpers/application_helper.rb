@@ -8,5 +8,9 @@ module ApplicationHelper
 	 		return "member"
 	 	end
 	 end
+	 def owner_name_for_card(account)
+        @owner = User.find_by(id: account.user_id)
+        return @owner.name
+    end
 
 end

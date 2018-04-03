@@ -1,54 +1,108 @@
-
-<h1><strong>Your Account</strong></h1>
-<div class="row text-center grid3">
+<div class="row jumbotron">
   <div class="col-md-4">
-    <h3><strong>Account name</strong></h3>
-    <p><%= @account.account_name %></p>
-  </div>
- 
-  <div class="col-md-4">
-    <h3><strong>User List</strong></h3>   
-    <% @usr.each do |n| %>
-      <p><%= n.name %></p>
-      <p><%= check_for_owner(n.id, @account) %></p>
-    <%end%>
+    <h3><strong>Your Account</strong></h3>
   </div>
   <% if check_for_owner(current_user.id, @account) =="owner" %>
     <div class="col-md-4">
-      <h3><strong>Add User</strong></h3>
-      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Add Users</button>
-  </div> 
+      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style = "float: right;">Add Users</button>
+    </div> 
   <%else%>
   <%end%>
+  <div class="col-md-4">
+   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
+  </div>
+</div>
   
 
-</div> 
+<table class="table table-sm table-hover table-bordered">
+  <thead class="thead-dark">
+      <tr>
+          <th>Sr.no</th>
+          <th>Name</th>
+          <th colspan="2" >Status</th>
+      </tr>
+  </thead>
+  <tbody class="table-striped">
+      <%count = 0%>
+      <%@usr.each do |n|%>
+          <tr class="table-light">
+              <td><%=count+=1%></td>
+              <td><%=n.name%></td>
+              <td><%=check_for_owner(n.id , @account)%></td>
+              
+          </tr>
+      <%end%>
+  </tbody>
+</table>
+<% @teams.each do |tm| %>
+  <div class="row jumbotron">
+     
+    <div class="col-md-8">
+      <h3><strong>"<%=tm.name%>" TEAM SHOW PAGE</strong></h3>
+    </div>
+    <div class="col-md-4">
+      <a href="<%=team_path(tm.id)%>" class="btn btn-success" style = " float: right">Your team</a>
+    </div> 
+      
+  </div>
+<%end%>
 
 
 
 <div class="modal fade" id="myModal" role="dialog">
-  <div class="modal-dialog">
-    <!-- Modal content-->
-    <div class="modal-content">
-      <div class="modal-header col-md-2">
-                    <h4 class="modal-title">Modal Header</h4>
-      </div>
-      <%= form_for :invitation, url: invitations_get_user_mail_path do |form| %>
-          <div class="modal-body">
-              <div class="field">
-                <div class = "col-md-2" >
-                    <%= form.label :email %>
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h4 class="modal-title">Invite Users</h4>
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <%= form_for :invitation, url: invitations_get_user_mail_path do |form| %>
+        <div class="modal-body">
+           <%= form.label :email %>
                     <%= form.email_field :user_email %>
                     <%= form.hidden_field :account_id, :value => @account.id %>
                     <%= form.submit "Invite" %>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-          </div>
-      <% end %>
+        </div>
+        <% end %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
     </div>
   </div>
-</div>
+
+
+
+ <div class="modal fade" id="myModal2" role="dialog">
+    <div class="modal-dialog">
+    
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+         
+          <h4 class="modal-title">Add Team Name</h4>
+           <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <%= form_for :team, url: teams_get_name_path do |form| %>
+        <div class="modal-body">
+          <%= form.label :Name %>
+                    <%= form.text_field :name %>
+                    <%= form.hidden_field :account_id, :value => @account.id %>
+                    <%= form.submit "Add Team" %>
+        </div>
+        <% end %>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+
 <style>
 .grid3 >div{
   height: 400px;

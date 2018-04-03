@@ -4,6 +4,9 @@ Rails.application.routes.draw do
       }
       # resources :users
       resources :accounts
+      resources :teams
+      	post 'teams/get_name'
+        post 'teams/get_teaminfo'
       resources :invitations 
   		post 'invitations/get_user_mail'
   		get 'check' => 'invitations#check_email'
