@@ -1,8 +1,8 @@
 module ApplicationHelper
 	 
 	 def check_for_owner(user_id, account)
+
 	 	if user_id == account.user_id
-	 		
 	 		return "owner"
 	 	else
 	 		return "member"
@@ -12,5 +12,4 @@ module ApplicationHelper
         @owner = User.find_by(id: account.user_id)
         return @owner.name
     end
-
 end

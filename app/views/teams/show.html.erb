@@ -8,11 +8,34 @@
 		<div class="col-md-4">
 			<h3><strong><%=@team.name%></strong></h3>
 		</div> 
-	
-	<div class="col-md-4">
+<% if check_for_owner(current_user.id, @accounts) =="owner" %>
+  <div class="col-md-4">
 		<button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style = "float: right;">Add Members</button> 
 	</div>
+  <%else%>
+  <%end%>
 </div>
+
+<h3>Members in your Team</h3>
+<table class="table table-sm table-hover table-bordered">
+  <thead class="thead-dark">
+      <tr>
+          <th>Sr.no</th>
+          <th>Name</th>
+      </tr>
+  </thead>
+  <tbody class="table-striped">
+      <%count = 0%>
+      <%@usrr.each do |u|%>
+          <tr class="table-light">
+              <td><%=count+=1%></td>
+              <td><%=u.name%></td>
+  
+              
+          </tr>
+      <%end%>
+  </tbody>
+</table>
 
 
 
@@ -26,22 +49,20 @@
           		<h4 class="modal-title">Add members</h4>
            		<button type="button" class="close" data-dismiss="modal">&times;</button>
        		</div>
-   			<%= form_for :team, url: teams_get_teaminfo_path do |form| %>
+   			<%= form_for :team, url: account_teams_get_teaminfo_path do |form| %>
         	<div class="modal-body">
           		<div id="checkboxes">
-  					<label>some label</label>
+  					<label>Members in this Account</label>
 						<ul>
 							<%@usr.each do |n|%>
-    							
-    						
-    						 <%= hidden_field_tag "checked[#{n.name}]", "false" %>
- 							<li><%= check_box_tag "checked[#{n.name}]","true", true %><%=n.name%></li>
-    					
-    						<%end%>
-    							<%= form.submit "Add member" %>
-  						</ul>
-				</div>
-      		</div>
+    						<%= hidden_field_tag "checked[#{n.id}]", "false" %>
+ 							  <li><%= check_box_tag "ids[]", n.id %><%=n.name%></li>
+                <%= form.hidden_field :team_id, :value => @team.id %>
+    					<%end%>
+    						<%= form.submit "Add member", class: "btn btn-success" %>
+  					</ul>
+				  </div>
+      	</div>
       		<%end%>
         <div class="modal-footer">
           <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
