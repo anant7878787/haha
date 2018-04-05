@@ -22,7 +22,7 @@
       <tr>
           <th>Sr.no</th>
           <th>Name</th>
-      </tr>
+      </tr> 
   </thead>
   <tbody class="table-striped">
       <%count = 0%>
@@ -30,14 +30,10 @@
           <tr class="table-light">
               <td><%=count+=1%></td>
               <td><%=u.name%></td>
-  
-              
-          </tr>
+          </tr> 
       <%end%>
   </tbody>
 </table>
-
-
 
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -55,7 +51,7 @@
   					<label>Members in this Account</label>
 						<ul>
 							<%@usr.each do |n|%>
-    						<%= hidden_field_tag "checked[#{n.id}]", "false" %>
+    						
  							  <li><%= check_box_tag "ids[]", n.id %><%=n.name%></li>
                 <%= form.hidden_field :team_id, :value => @team.id %>
     					<%end%>

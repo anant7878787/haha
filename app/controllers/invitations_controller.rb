@@ -1,25 +1,19 @@
 class InvitationsController < ApplicationController
 
 
-	def get_user_mail
+	def get_user_mail 
         
         @email = valid_params[:user_email]
 		@account_id = valid_params[:account_id]
-        check = User.find_by(email: @email)
-        if check == nil
-            @invitation = Invitation.create(account_id: @account_id, user_email: @email)
-            UserMailer.invitation_send(@email, @account_id).deliver_now
-            redirect_to accounts_path
-        else 
-            begin
-                @invitation = Invitation.create(account_id: @account_id, user_id: check.id, user_email: @email)
-                UserMailer.invitation_send(@email, @account_id).deliver_now
+        check = Invitation.check_for_user(@email)
+        
+        @i = Invitation.creating_users_in_invitation(check, @account_id, @email)
+      
+            if @i == true
                 redirect_to accounts_path
-            rescue
+            else
                 redirect_to account_path(@account_id), alert: "This User is already exist in your team"
             end
-        end
-
     end
     
     def check_email 
