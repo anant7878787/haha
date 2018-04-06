@@ -37,14 +37,29 @@ class Account < ApplicationRecord
        @usr
     end
 
-    def self.find_team_by_account(account)
-      Team.where(account_id: account.id)
+    def self.find_myteam_by_account(account, current_user)
+      
+      Team.where("account_id = ? AND owner_id = ?" , account.id , current_user.id).to_a
+      
+      
     end
 
+    def self.find_otherteam_by_account(account, teams , current_user)
+      
+      @other_teams = Team.where(account_id: account.id)
+      
+      other_teams = @other_teams - teams
+      @other_teams = []
 
+      other_teams.each do |team|
+        if Teamuser.find_by("team_id = ? AND user_id = ?" , team.id , current_user.id).present?
+          @other_teams.push(team)
+        end
+      end
+        @other_teams
+    end
 
-
-
+ 
 
 
 

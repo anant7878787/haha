@@ -16,6 +16,9 @@
    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
   </div>
    <%else%>
+   <div class="col-md-3">
+   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
+  </div>
    <div class="col-md-4">
       <h3><strong>You are member</strong></h3>
     </div>
@@ -43,20 +46,30 @@
       <%end%>
   </tbody>
 </table>
+
+
 <% @teams.each do |tm| %>
   <div class="row jumbotron">
-     
-    <div class="col-md-8">
-      <h3><strong>"<%=tm.name%>" TEAM SHOW PAGE</strong></h3>
-    </div>
     <div class="col-md-4">
-      <a href="<%=account_team_path(@account.id,tm.id)%>" class="btn btn-success" style = " float: right">Your team</a>
+      <h3>My Teams</h3>
+      <h3><strong>"<%=tm.name%>" TEAM</strong></h3>
+        <a href="<%=account_team_path(@account.id,tm.id)%>" class="btn btn-success" style = " float: right">Your team</a>
+    </div>
     </div> 
-      
-  </div>
 <%end%>
 
-
+<% @other_teams.each do |om| %>
+  <div class="row jumbotron">
+    <div class="col-md-4">
+      <h3>Other Teams</h3>
+      <h3><strong>"<%=om.name%>" TEAM</strong></h3>
+        <a href="<%=account_team_path(@account.id,om.id)%>" class="btn btn-success" style = " float: right">Your team</a>
+    
+</div> 
+  </div> 
+<%end%>    
+  
+  
 
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -93,7 +106,7 @@
       <div class="modal-content">
         <div class="modal-header">
          
-          <h4 class="modal-title">Add Team Name</h4>
+          <h4 class="modal-title">Add Team Name</h4> 
            <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
         <%= form_for :team, url: account_teams_get_name_path(@account) do |form| %>

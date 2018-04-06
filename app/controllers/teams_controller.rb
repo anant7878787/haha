@@ -1,10 +1,16 @@
 class TeamsController < ApplicationController
 	
 
-	def get_name
+	def get_name 
 		@name = valid_params[:name]
 		@account_id = valid_params[:account_id]
-		@team = Team.create_team(@account_id, @name)
+		@account = Account.find_by(id: @account_id)
+		@owner_id = current_user.id
+		@team = Team.create_team(@account_id, @name, @owner_id)
+		@team_id = Team.last.id
+		
+		@teamuser = Teamuser.create(team_id: @team_id, user_id: current_user.id)
+	
 		redirect_to account_path(@account_id) 
 	end
 
@@ -13,6 +19,7 @@ class TeamsController < ApplicationController
 		@team = Team.find(params[:team][:team_id])
 		@account_id = params[:account_id]
 		@teamuser = Team.find_team_users(@ids, @team)
+		debugger
 	    redirect_to account_team_path(@account_id, @team.id)
 	end
 	

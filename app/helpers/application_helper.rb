@@ -13,3 +13,17 @@ module ApplicationHelper
         return @owner.name
     end
 end
+
+
+
+
+def check_for_owner_add_member(user_id, team_id)
+
+	 	if Team.find_by(owner_id: user_id, id: team_id).present?
+	 		
+	 		return "owner"
+	 	else
+	 		
+	 		return "member"
+	 	end
+	 end
