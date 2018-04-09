@@ -1,6 +1,7 @@
 class TeamsController < ApplicationController
 	
 
+	#getting team name, account id
 	def get_name 
 		@name = valid_params[:name]
 		@account_id = valid_params[:account_id]
@@ -13,22 +14,25 @@ class TeamsController < ApplicationController
 	
 		redirect_to account_path(@account_id) 
 	end
-
+ 
 	def get_teaminfo 
-		@ids = params[:ids]
+		@users_for_modal = params[:user_ids_for_modal]
 		@team = Team.find(params[:team][:team_id])
 		@account_id = params[:account_id]
-		@teamuser = Team.find_team_users(@ids, @team)
-		debugger
+		
+		@teamuser = Team.find_team_users(@users_for_modal, @team)
 	    redirect_to account_team_path(@account_id, @team.id)
 	end
 	
 	def show 
 		@team = Team.find(params[:id])
 		@accounts = Team.find_account(@team)
-		@usr = Team.find_invited_users_for_modal(@accounts, @team)
+		#To show owner and invited users in modal
+		@user_for_modal = Team.find_invited_users_for_modal(@accounts, @team)
 		@teamuser = Teamuser.all
-		@usrr = Team.find_teamusers_to_show(@teamuser, @team)
+		#To show teamusers in table
+		@usr_for_table = Team.find_teamusers_to_show(@teamuser, @team)
+		@user_for_modal = @user_for_modal - @usr_for_table
 	end
 
 	private

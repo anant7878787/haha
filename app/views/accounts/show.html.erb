@@ -16,12 +16,13 @@
    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
   </div>
    <%else%>
-   <div class="col-md-3">
-   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
-  </div>
+  
    <div class="col-md-4">
       <h3><strong>You are member</strong></h3>
     </div>
+     <div class="col-md-3">
+   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
+  </div>
   <%end%>
 </div>
   
@@ -46,26 +47,31 @@
       <%end%>
   </tbody>
 </table>
-
-
+<br/>
+<h3><strong>My Teams-</strong></h3>
 <% @teams.each do |tm| %>
-  <div class="row jumbotron">
-    <div class="col-md-4">
-      <h3>My Teams</h3>
-      <h3><strong>"<%=tm.name%>" TEAM</strong></h3>
-        <a href="<%=account_team_path(@account.id,tm.id)%>" class="btn btn-success" style = " float: right">Your team</a>
-    </div>
-    </div> 
-<%end%>
 
+  <div class="row jumbotron border border-secondary">
+    <div class="col-md-6">
+      <h3><strong><%=tm.name%></strong></h3>
+      <p><strong>By <%=owner_name_for_team(tm.owner_id)%></strong></p>
+    </div>
+    <div class = "col-md-4">
+      <a href="<%=account_team_path(@account.id,tm.id)%>" class="btn btn-success" style = " float: right">Your team</a>
+    </div>  
+  </div> 
+<%end%>
+<br/>
+<h3><strong>Other Teams-</strong></h3>
 <% @other_teams.each do |om| %>
-  <div class="row jumbotron">
-    <div class="col-md-4">
-      <h3>Other Teams</h3>
-      <h3><strong>"<%=om.name%>" TEAM</strong></h3>
-        <a href="<%=account_team_path(@account.id,om.id)%>" class="btn btn-success" style = " float: right">Your team</a>
-    
-</div> 
+  <div class="row jumbotron border border-secondary">
+    <div class="col-md-6">
+      <h3><strong><%=om.name%></strong></h3>
+      <p><strong>By <%=owner_name_for_team(om.owner_id)%></strong></p>
+    </div>
+    <div class = "col-md-4">
+      <a href="<%=account_team_path(@account.id,om.id)%>" class="btn btn-success" style = " float: right">Your team</a>
+    </div> 
   </div> 
 <%end%>    
   
@@ -99,7 +105,7 @@
 
 
 
- <div class="modal fade" id="myModal2" role="dialog">
+  <div class="modal fade" id="myModal2" role="dialog">
     <div class="modal-dialog">
     
       <!-- Modal content-->

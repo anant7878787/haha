@@ -6,9 +6,9 @@ class Team < ApplicationRecord
 	end	
 
 
-	def self.find_team_users(ids, team)
-		ids.each do |id|
-		 	@teamuser = Teamuser.create(team_id: team.id, user_id: id)
+	def self.find_team_users(users_for_modal, team)
+		users_for_modal.each do |id|
+			@teamuser = Teamuser.create(team_id: team.id, user_id: id)
 		end 
 	end
 
@@ -18,22 +18,18 @@ class Team < ApplicationRecord
 	#Methods for team show page
 	def self.find_account(team)
 		Account.find_by(id: team.account_id) 
+		
 	end
 	def self.find_invited_users_for_modal(accounts, team)
 		@usr = Array.new
-		@u = User.find_by(id: accounts.user_id)
-		
+		@owner = User.find_by(id: accounts.user_id)
+		@usr.push(@owner)
 		@invitations = Invitation.where(account_id: accounts.id)
 		@invitations.each do |invi|
 			if invi.user_id.present?
 				@users = User.find_by(id: invi.user_id)
-					if !Teamuser.find_by_user_id_and_team_id(@users.id, team.id)
-					
-						@usr.push(@users)
-						@usr.push(@u)
-					else
-					end
-			else
+				@usr.push(@users)
+			
 			end
 		end
 		@usr

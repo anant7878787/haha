@@ -1,5 +1,5 @@
 class User < ApplicationRecord
-	 attr_accessor :account_name, :account_id1, :user_email1
+	 attr_accessor :account_name, :check_account_id, :check_user_email
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
@@ -8,12 +8,12 @@ class User < ApplicationRecord
    
  	#validates :email, :password, presence: true
 
-	after_create :create_user
+	after_create :create_user 
  	private
  	def create_user
- 		 
- 		if account_id1.present? && user_email1.present?
- 			@invitation = Invitation.where("account_id = ? AND user_email = ?", account_id1, user_email1).update(user_id: self.id)
+ 		 debugger
+ 		if check_account_id.present? && check_user_email.present?
+ 			@invitation = Invitation.where("account_id = ? AND user_email = ?", check_account_id, check_user_email).update(user_id: self.id)
  		else
    		Account.create(user_id: self.id , account_name: account_name)
  	end

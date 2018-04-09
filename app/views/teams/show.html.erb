@@ -18,7 +18,7 @@
 </div>
 
 <h3>Members in your Team</h3>
-<table class="table table-sm table-hover table-bordered">
+<table class="table table-sm table-hover table-bordered" style="margin-bottom: 28px;">
   <thead class="thead-dark">
       <tr>
           <th>Sr.no</th>
@@ -27,7 +27,7 @@
   </thead>
   <tbody class="table-striped">
       <%count = 0%>
-      <%@usrr.each do |u|%>
+      <%@usr_for_table.each do |u|%>
           <tr class="table-light">
               <td><%=count+=1%></td>
               <td><%=u.name%></td>
@@ -51,9 +51,8 @@
           		<div id="checkboxes">
   					<label>Members in this Account</label>
 						<ul>
-							<%@usr.each do |n|%>
-    						
- 							  <li><%= check_box_tag "ids[]", n.id %><%=n.name%></li>
+							<%@user_for_modal.each do |n|%>
+ 							  <li><%= check_box_tag "user_ids_for_modal[]", n.id %><%=n.name%></li>
                 <%= form.hidden_field :team_id, :value => @team.id %>
     					<%end%>
     						<%= form.submit "Add member", class: "btn btn-success" %>
