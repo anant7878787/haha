@@ -30,6 +30,7 @@ class TeamsController < ApplicationController
 		@usr_for_table = Team.find_teamusers_to_show(@team)
 		@user_for_modal = @user_for_modal - @usr_for_table
 		@message = Message.new
+		@messages = Message.all
 	end
 
 	private 

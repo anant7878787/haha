@@ -4,12 +4,13 @@ Rails.application.routes.draw do
       }
       # resources :users
       resources :accounts do
-        resources :teams do
+        resources :teams
           post 'teams/get_name'
           post 'teams/get_teaminfo'
-          resources :messages
-      	end
+          # resources :messages
       end
+      mount ActionCable.server => '/cable'
+      
       resources :invitations 
   		  post 'invitations/get_user_mail'
   		  get 'check' => 'invitations#check_email'
