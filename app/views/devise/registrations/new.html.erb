@@ -1,18 +1,22 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  
   <%= devise_error_messages! %>
-  <%= f.hidden_field :check_account_id,:value => params[:acco_id]  %>
-  <%= f.hidden_field :check_user_email,:value => params[:emaill]  %> 
-  <%debugger%>
+  <% if devise_error_messages!.present? && params[:user][:key_for_invitation].present?%>
+  
+      <!--redierting to signup page(without account name) through gmail -->
+      <% devise_redirect(params[:user][:key_for_invitation]) %>
+
+  <% end %>
+  <%= f.hidden_field :key_for_invitation,:value => params[:invited_key] %> 
   <div class="container jumbotron">
-   
     <div class="row d-flex justify-content-center">  
       <div class="col-md-8 ">
-      <%if params[:emaill].present? %> 
+      <%if params[:invited_key].present? %> 
         <div class="form-group">
           <h2>Sign up</h2>
       
           <%= f.label :email %><br />
-          <%= f.email_field :email, :value => params[:emaill], autofocus: true,:readonly => true, autocomplete: "email", class: "form-control" %>
+          <%= f.email_field :email, :value => get_invitation_email(params[:invited_key]), autofocus: true,:readonly => true, autocomplete: "email", class: "form-control" %>
           <!-- text_field :ecard, :sender, :value => 'contact@host.com' -->
         </div>
       <% else %> 

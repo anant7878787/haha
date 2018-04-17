@@ -1,5 +1,5 @@
 class Account < ApplicationRecord
-  
+  validates :account_name, :user_id, presence: true
   class << self
     #Method for index page
     def all_accounts_on_index(current_user)
@@ -16,13 +16,13 @@ class Account < ApplicationRecord
 
     #Method for show page
     def find_user_by_account(account) 
-       User.find_by(id: account.user_id)
+      return User.find(account.user_id)
     end
 
     def search_in_invitations_by_account_id(account)
-        Invitation.where(account_id: account.id)
-    end
-
+      return Invitation.where(account_id: account.id)
+      debugger
+    end 
 
     def find_all_invited_members_by_invitations(invitations)
       @usr = Array.new 
@@ -34,31 +34,29 @@ class Account < ApplicationRecord
           else
           end
       end
-       @usr
+      return @usr
+       
     end
 
-    def find_myteam_by_account(account, current_user)
+    def find_myteam_by_account(a, b)
       
-      @teams = Team.where("account_id = ? AND owner_id = ?" , account.id , current_user.id).to_a
+      return @teams = Team.where("account_id = ? AND owner_id = ?" , a , b).to_a
       
       
     end
 
     def find_otherteam_by_account(account, teams , current_user)
-      
-      @other_teams = Team.where(account_id: account.id)
-      
-      other_teams = @other_teams - teams
+      @all_teams = Team.where(account_id: account.id)
+      other_teams = @all_teams - teams
       @other_teams = []
-
       other_teams.each do |team|
         if Teamuser.find_by("team_id = ? AND user_id = ?" , team.id , current_user.id).present?
           @other_teams.push(team)
         end
       end
-        @other_teams
+        return @other_teams
     end
-
+ 
     # def myteam_owner_name(teams)
     #   owner_name = []
     #   teams.each do |mt|

@@ -37,8 +37,10 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '~> 2.13'
-  gem 'selenium-webdriver'
+  gem 'rspec-rails', '~> 3.7'
+  gem 'factory_girl_rails', '~> 4.5.0'
+  gem 'capybara', '~> 2.5'
+   gem 'selenium-webdriver'
 end
 
 group :development do
@@ -55,5 +57,14 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem 'devise', '~> 4.2'
 gem 'cocoon', '~> 1.2', '>= 1.2.11'
 gem 'bootstrap', '~> 4.0.0'
- gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
- gem 'popper_js', '~> 1.12', '>= 1.12.9'
+gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
+gem 'popper_js', '~> 1.12', '>= 1.12.9'
+
+group :test do
+  gem 'faker', '~> 1.6.1'
+  gem 'shoulda-matchers', '~> 3.0', require: false
+  gem 'database_cleaner', '~> 1.5'
+   
+end
+
+

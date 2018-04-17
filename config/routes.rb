@@ -4,9 +4,11 @@ Rails.application.routes.draw do
       }
       # resources :users
       resources :accounts do
-      resources :teams
-      	post 'teams/get_name'
-        post 'teams/get_teaminfo'
+        resources :teams do
+          post 'teams/get_name'
+          post 'teams/get_teaminfo'
+          resources :messages
+      	end
       end
       resources :invitations 
   		  post 'invitations/get_user_mail'

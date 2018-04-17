@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180404050731) do
+ActiveRecord::Schema.define(version: 20180417123643) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "account_name"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(version: 20180404050731) do
     t.integer "user_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["user_id", "account_name"], name: "index_accounts_on_user_id_and_account_name", unique: true
     t.index ["user_id"], name: "index_accounts_on_user_id"
   end
 
@@ -25,7 +26,18 @@ ActiveRecord::Schema.define(version: 20180404050731) do
     t.integer "account_id", null: false
     t.integer "user_id"
     t.string "user_email"
+    t.string "key"
     t.index ["user_email", "account_id"], name: "index_invitations_on_user_email_and_account_id", unique: true
+  end
+
+  create_table "messages", force: :cascade do |t|
+    t.integer "team_id"
+    t.integer "user_id"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_messages_on_team_id"
+    t.index ["user_id"], name: "index_messages_on_user_id"
   end
 
   create_table "teams", force: :cascade do |t|

@@ -35,6 +35,17 @@
       <%end%>
   </tbody>
 </table>
+<div data-behavior = 'messages'>
+ 
+    <% 1.upto(10) do %>
+      <div><strong>excid3:</strong> Hello World! </div>
+    <% end%>
+</div>
+
+<%= form_for @message do |f| %> 
+  <%= f.text_area :body %>
+<%end%>
+
 
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
@@ -67,3 +78,15 @@
       
     </div>
 </div>
+
+
+
+  <!-- <div id="messages" data-team-id = "<%= @team.id %>">
+            <%= render @messages %>
+        </div>
+ 
+            <form>
+                <label>Say something:</label><br>
+                <input type="text" data-behavior="room_speaker">
+            </form> -->
+ 
