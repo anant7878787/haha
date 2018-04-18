@@ -3,6 +3,7 @@
   <head>
     <title>MPM</title>
     <%= csrf_meta_tags %>
+    <meta name="action-cable-url" body="/cable" />
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
@@ -15,24 +16,9 @@
           <%= content_tag(:div, msg, class: "alert alert-info") %>
           <% end %>
 
-          <div class = "fluid-container">
-            <div class = "row" >
-              <div class = "col-sm-2">
-                <% if user_signed_in? %>
-                  <h5>Chatrooms</h5>
-                  <ul>
-                    
-            
-                  </ul>
-                <%end%>
-              </div>
-              <div class = "col-sm-10">
+         
                 <%= yield %>
 
-              </div>
-            </div>
-          </div>
-        
         </div>
       <%= render 'layouts/footer'%>
   </body>

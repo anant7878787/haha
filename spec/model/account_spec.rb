@@ -34,17 +34,17 @@ RSpec.describe Account, type: :model do
   	  end
 
       #checking when invitations are not present
-      it "Testing when invited user is not present" do  
-        owner = FactoryGirl.create(:user)
-        account = Account.create(account_name: "Maropost" , user_id: owner.id)
-        another_owner = FactoryGirl.create(:user)
-        another_owner_account = Account.create(account_name: "Flipkart" , user_id: another_owner.id)
-        invitation = Invitation.create(account_id: account.id, user_id: "2", user_email: "gurjot21@gmail.com", key: "aaaaaa8b18")
-        invitation = Invitation.create(account_id: another_owner_account.id, user_id: "3", user_email: "gj31@gmail.com", key: "1f638b18194")
-        @invitations = Invitation.where(account_id: another_owner_account.id)
-        invitations = Account.search_in_invitations_by_account_id(account)
-        expect(@invitations).not_to eq(invitations)
-      end
+      # it "Testing when invited user is not present" do  
+      #   owner = FactoryGirl.create(:user)
+      #   account = Account.create(account_name: "Maropost" , user_id: owner.id)
+      #   another_owner = FactoryGirl.create(:user)
+      #   another_owner_account = Account.create(account_name: "Flipkart" , user_id: another_owner.id)
+      #   invitation = Invitation.create(account_id: account.id, user_id: "2", user_email: "gurjot21@gmail.com", key: "aaaaaa8b18")
+      #   invitation = Invitation.create(account_id: another_owner_account.id, user_id: "3", user_email: "gj31@gmail.com", key: "1f638b18194")
+      #   @invitations = Invitation.where(account_id: another_owner_account.id)
+      #   invitations = Account.search_in_invitations_by_account_id(account)
+      #   expect(@invitations).not_to eq(invitations)
+      # end
     end
 
 
@@ -115,7 +115,7 @@ RSpec.describe Account, type: :model do
     		team = Account.find_myteam_by_account(account, owner.id)
     	    expect(@team).to eq(team)
     	end
-
+    end
       #failure case
       # it "" do 
       # end

@@ -14,7 +14,12 @@ module ApplicationHelper
          @owner = User.find_by(id: team_id)
          return @owner.name
     end
-
+    #getting current_user name for chat room
+	def team_owner_name(user_id)
+        @owner = User.find_by(id: user_id)
+        
+        return @owner.name
+    end
 
 
 	def check_for_owner_add_member(user_id, team_id)

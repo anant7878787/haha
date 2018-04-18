@@ -7,7 +7,8 @@ class ChatChannel < ApplicationCable::Channel
     # Any cleanup needed when channel is unsubscribed
   end
 
+  #called by client side
   def speak(data)
-  	ApplicationCable.server.broadcast 'chat_channel', message: data['message']
+  	Message.create(body: data['message'], user_id: current_user.id, team_id: data['team_id'])
   end
 end
