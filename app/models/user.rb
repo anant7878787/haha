@@ -5,7 +5,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
     has_many :accounts, dependent: :destroy 
-    has_many :messages
+    # has_many :messages
  	#validates :email, :password, presence: true
   validates :name, presence: true
  	def self.find_user(email) 

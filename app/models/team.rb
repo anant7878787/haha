@@ -1,5 +1,5 @@
 class Team < ApplicationRecord
-	has_many :messages
+	# has_many :messages
 	#Methods for get_name and get_teaminfo method
 	def self.create_team(account_id, namee, owner_id) 
 		Team.create(account_id: account_id, name: namee, owner_id: owner_id)

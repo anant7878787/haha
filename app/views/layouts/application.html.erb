@@ -14,25 +14,7 @@
           <% flash.each do |name, msg| %>
           <%= content_tag(:div, msg, class: "alert alert-info") %>
           <% end %>
-
-          <div class = "fluid-container">
-            <div class = "row" >
-              <div class = "col-sm-2">
-                <% if user_signed_in? %>
-                  <h5>Chatrooms</h5>
-                  <ul>
-                    
-            
-                  </ul>
-                <%end%>
-              </div>
-              <div class = "col-sm-10">
-                <%= yield %>
-
-              </div>
-            </div>
-          </div>
-        
+          <%= yield %>
         </div>
       <%= render 'layouts/footer'%>
   </body>
