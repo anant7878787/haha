@@ -21,8 +21,11 @@ class Account < ApplicationRecord
 
     def search_in_invitations_by_account_id(account)
       return Invitation.where(account_id: account.id)
-      debugger
     end 
+
+    #not getting account_id
+    #
+
 
     def find_all_invited_members_by_invitations(invitations)
       @usr = Array.new 

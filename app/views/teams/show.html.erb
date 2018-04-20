@@ -69,47 +69,85 @@
     </div>
 </div>
 <div class = "container col-md-8 ">
-<h3 ><strong>Chat Room(<%=@team.name%>)</strong></h3>
-<div class = "jumbotron" style="float: right; overflow-x: hidden; overflow-y: scroll; height: 450px ; width: 100%; padding: 10px">
-  
-    <div id="messages" data-team-id = "<%= @team.id %>">
-      <%= render @messages %>
-    </div>
-    <!-- we can also call coffee script by writing data-behavior tag(data-behavior="room_speake") -->
-   <form>
-      <label><strong>Write a message</strong></label><br>
-        <input type="text_field" data-value = '<%=@team.id%>' id="msg">
+  <h3 ><strong>Chat Room(<%=@team.name%>)</strong></h3>
+  <div class = "jumbotron" style="float: right; overflow-x: hidden; overflow-y: scroll; height: 450px ; width: 100%; padding: 10px">
+      <div id="messages" data-team-id = "<%= @team.id %>">
+        <%= render @messages %>
+      </div>
+      <!-- we can also call coffee script by writing data-behavior tag(data-behavior="room_speake") -->
+      <form>
+        <label><strong>Write a message</strong></label><br>
+          <input type="text_field" data-value = '<%=@team.id%>' id="msg">
+          <input type="button" class = "btn btn-default" id = "btn">
       </form>
-</div>
+  </div>
 </div>
 
 
-<script type="text/javascript">
-  App.chat = App.cable.subscriptions.create({
-  channel: "ChatChannel"
-}, {
-  connected: function() {},
-  disconnected: function() {},
-  received: function(data) {
-    return $('#messages').append(data['message']);
-  },
-  //first speak to take parameter(message, team_id) and pass this to server side(Roomchannel's speak method)
-  speak: function(message, team_id) {
-    return this.perform('speak', {
-      message: message,
-      team_id: team_id
-    });
-  }
-}, $(document).on('keypress', function(event) {
-  var message, team_id;
-  team_id = $("#msg").attr('data-value');
-  message = $("#msg").val();
-  if (event.keyCode === 13) {
-    App.chat.speak(message, team_id);
-    event.target.value = '';
-    return event.preventDefault();
-  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <script type="text/javascript">
+  jQuery(document).on('turbolinks:load', function() {
+      var messages;
+      messages = $("#messages").attr('data-team-id');
+      App.chat = App.cable.subscriptions.create({
+      channel: "ChatChannel",
+       id: messages
+  }, {
+    connected: function() {},
+    disconnected: function() {},
+    received: function(data) {
+      return $('#messages').append(data['message']);
+    },
+    //first speak to take parameter(message, team_id) and pass this to server side(Roomchannel's speak method)
+    speak: function(message, team_id) {
+      return this.perform('speak', {
+        message: message,
+        team_id: team_id
+      });
+    }
+  }, $(document).on('keypress', function(event) {
+    byebug;
+    var message, team_id;
+    team_id = $("#msg").attr('data-value');
+    message = $("#msg").val();
+    if (event.keyCode === 13) {
+      App.chat.speak(message, team_id);
+      event.target.value = '';
+      return event.preventDefault();
+    }
 }));
 </script>
+ -->
 
 
+ 
