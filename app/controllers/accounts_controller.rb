@@ -2,7 +2,6 @@ class AccountsController < ApplicationController
 
 
 	def index 
-        #Redirecting to Account controller
         @accounts = Account.all_accounts_on_index(current_user)
     end
 	

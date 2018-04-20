@@ -23,10 +23,6 @@ class Account < ApplicationRecord
       return Invitation.where(account_id: account.id)
     end 
 
-    #not getting account_id
-    #
-
-
     def find_all_invited_members_by_invitations(invitations)
       @usr = Array.new 
       invitations.each do |inv|
