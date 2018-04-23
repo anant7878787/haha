@@ -6,7 +6,7 @@
   <% if check_for_owner(current_user.id, @account) =="owner" %>
   <div class="col-md-3">
     
-      <h3><strong><%=@users.name%>(OWNER)</strong></h3>
+      <h3><strong><%=@owner_name.name%>(OWNER)</strong></h3>
     </div> 
     <div class="col-md-3">
       <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style = "float: right;">Add Users</button>
@@ -15,7 +15,7 @@
   <div class="col-md-3">
    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
   </div>
-   <%else%>
+   <%else%> 
   
    <div class="col-md-4">
       <h3><strong>You are member</strong></h3>
@@ -37,7 +37,7 @@
   </thead>
   <tbody class="table-striped">
       <%count = 0%>
-      <%@usr.each do |n|%>
+      <%@invited_users.each do |n|%>
           <tr class="table-light">
               <td><%=count+=1%></td>
               <td><%=n.name%></td>

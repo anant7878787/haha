@@ -1,51 +1,29 @@
 class Account < ApplicationRecord
   validates :account_name, :user_id, presence: true
-  class << self
-    #Method for index page
-    def all_accounts_on_index(current_user)
-      @invited_accounts = Array.new
-      @invitations = find_user_by_invitation(current_user)
-      @owner_accounts = find_accounts_for_owner(current_user)
-
-      @invitations.each do |invitation|
-        account = Account.find_by(id: invitation.account_id)
-        @invited_accounts.push(account)
-      end
-      @accounts = all_accounts(@invited_accounts, @owner_accounts)
-    end
-
-    #Method for show page
-    def find_user_by_account(account) 
-      return User.find(account.user_id)
-    end
-
-    def search_in_invitations_by_account_id(account)
-      return Invitation.where(account_id: account.id)
+  
+    #this method finding account owner name(To show on account show page) through user table
+    #we
+    def find_user_by_account 
+      return User.find(user_id)
     end 
-
-    def find_all_invited_members_by_invitations(invitations)
-      @usr = Array.new 
-      invitations.each do |inv|
-          if inv.user_id.present?
-            urs_id = inv.user_id
-            user1 = User.find_by(id: urs_id)
-            @usr.push(user1)
-          else
-          end
-      end
-      return @usr
-       
+    #i bind two functions into one(search_in_invitation_by_account_id into this function), 
+    #first function(s_i_i_b_a) finding invitations for that account and by using those 
+    #invitations we are finding invited users info to show on show page.
+    def find_all_invited_members_by_invitations
+      @invited_users_ids = Invitation.where(account_id: id).pluck(:user_id) 
+      @usr = User.where(id: [@invited_users_ids])
+      return @usr     
     end
 
-    def find_myteam_by_account(a, b)
-      
-      return @teams = Team.where("account_id = ? AND owner_id = ?" , a , b).to_a
-      
-      
+
+    #finding myteams(which are created by account owner)
+    def find_myteam_by_account(b)
+      return @teams = Team.where("account_id = ? AND owner_id = ?" , id , b).to_a
     end
 
-    def find_otherteam_by_account(account, teams , current_user)
-      @all_teams = Team.where(account_id: account.id)
+    #finding otherteams(which are created by invited users of that account_owner)
+    def find_otherteam_by_account(teams , current_user)
+      @all_teams = Team.where(account_id: id)
       other_teams = @all_teams - teams
       @other_teams = []
       other_teams.each do |team|
@@ -53,8 +31,27 @@ class Account < ApplicationRecord
           @other_teams.push(team)
         end
       end
-        return @other_teams
+        return @other_teams 
     end
+
+
+  class << self
+    #Method for index page
+    def all_accounts_on_index(current_user) 
+      invitations = Invitation.where(user_id: current_user.id).pluck(:account_id)
+      owner_accounts = Account.where(user_id: current_user.id).pluck(:id) 
+      @accounts = Account.where(id: [ invitations, owner_accounts].flatten)
+    end
+  end
+end
+     
+
+
+
+
+    #Method for show page
+   
+    
  
     # def myteam_owner_name(teams)
     #   owner_name = []
@@ -72,33 +69,6 @@ class Account < ApplicationRecord
     #   debugger
     # end
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    #Sub methods for index page
-
-    def find_user_by_invitation(current_user)
-      Invitation.where(user_id: current_user.id)
-    end
-
-    def find_accounts_for_owner(current_user)
-      Account.where(user_id: current_user.id)
-    end
-
-    def all_accounts(invited_accounts, owner_accounts)
-      @invited_accounts|@owner_accounts
-    end
 
 
 
@@ -125,5 +95,4 @@ class Account < ApplicationRecord
   # 		@accounts = inv_accounts(user) | owner_acc(user)
   # 	end
   # end
-end
-end
+
