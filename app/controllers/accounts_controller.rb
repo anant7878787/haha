@@ -6,7 +6,7 @@ class AccountsController < ApplicationController
     end
 	
  
-    def show 
+    def show  
         @account = Account.find(params[:id]) 
         @owner_name = @account.find_user_by_account
         @invited_users = @account.find_all_invited_members_by_invitations

@@ -17,8 +17,8 @@ class Account < ApplicationRecord
 
 
     #finding myteams(which are created by account owner)
-    def find_myteam_by_account(b)
-      return @teams = Team.where("account_id = ? AND owner_id = ?" , id , b).to_a
+    def find_myteam_by_account(current_user)
+      return @teams = Team.where("account_id = ? AND owner_id = ?" , id , current_user).to_a
     end
 
     #finding otherteams(which are created by invited users of that account_owner)

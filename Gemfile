@@ -59,6 +59,7 @@ gem 'cocoon', '~> 1.2', '>= 1.2.11'
 gem 'bootstrap', '~> 4.0.0'
 gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
 gem 'popper_js', '~> 1.12', '>= 1.12.9'
+gem 'simplecov'
 
 group :test do
   gem 'faker', '~> 1.6.1'

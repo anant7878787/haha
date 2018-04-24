@@ -1,142 +1,347 @@
 require 'rails_helper'
 
 RSpec.describe Account, type: :model do
+  before :each do
+    @owner = create :user
+    @owner_account = create :account , user_id: @owner.id
+    @member = create :user
+    @member_account = create :account , user_id: @member.id
+  end
 
   	#checking whether show page getting owner name
     describe ".find_user_by_account(account)" do
       it "Testing whether owner name showing on show page or not" do
-      	user = FactoryGirl.create(:user)
-        account = Account.create(account_name: "Maropost" , user_id: user.id)
-        # @users = User.find_by(id: account.user_id)
-     	  users = Account.find_user_by_account(account)
-     	  expect(users).to eq(user)
+     	  users = @owner_account.find_user_by_account
+     	  expect(users).to eq(@owner)
       end
-
+    #failure case
     #checking whether show page not getting owner name
-      it "when the current user is not owner" do
-        user = FactoryGirl.create(:user)
-        member = FactoryGirl.create(:user)
-        account = Account.create(user_id: user.id)
-        return_users = Account.find_user_by_account(account)
-        expect(return_users).not_to eq(member)
-      end
-    end
-
-    #Checking whether any invited user present in Invitation table through account_id
-    describe ".search_in_invitations_by_account_id" do
-      it "Testing whether any invited user present" do
-       	user = FactoryGirl.create(:user)
-        account = Account.create(account_name: "Maropost" , user_id: user.id)
-        invitation = Invitation.create(account_id: account.id, user_id: "2", user_email: "gurjot21@gmail.com", key: "1f638b181946a0e7274363b929123fdbf98f8a29")
-  	  	@invitations = Invitation.where(account_id: account.id)
-  		  invitations = Account.search_in_invitations_by_account_id(account)
-  	  	expect(@invitations).to eq(invitations)
-  	  end
-
-      #checking when invitations are not present
-       it "Testing when invited user is not present" do  
-         owner = FactoryGirl.create(:user)
-         account = Account.create(account_name: "Maropost" , user_id: owner.id)
-         another_owner = FactoryGirl.create(:user)
-         another_owner_account = Account.create(account_name: "Flipkart" , user_id: another_owner.id)
-         invitation = Invitation.create(account_id: account.id, user_id: "2", user_email: "gurjot21@gmail.com", key: "aaaaaa8b18")
-         invitation = Invitation.create(account_id: another_owner_account.id, user_id: "3", user_email: "gj31@gmail.com", key: "1f638b18194")
-         @invitations = Invitation.where(account_id: another_owner_account.id)
-         invitations = Account.search_in_invitations_by_account_id(account)
-         expect(@invitations).not_to eq(invitations)
+       it "when the current user is not owner" do
+         return_users = @owner_account.find_user_by_account
+         expect(return_users).not_to eq(@member)
        end
     end
-
-
-    #checking when invited user not present in Invitation table
-  
-      it "Testing whether any invited user present" do
-      user = FactoryGirl.create(:user)
-      account = Account.create(account_name: "Maropost" , user_id: user.id)
-      invitation = Invitation.create(account_id: account.id, user_id: "2", user_email: "gurjot21@gmail.com", key: "1f638b181946a0e7274363b929123fdbf98f8a29")
-      @invitations = Invitation.where(account_id: account.id)
-      invitations = Account.search_in_invitations_by_account_id(account)
-      expect(@invitations).to eq(invitations)
-    end
-
-
-
-
-
 
     #Checking whether getting user details or not
-  	describe ".find_all_invited_members_by_invitations(invitations)" do
+    describe ".find_all_invited_members_by_invitations(invitations)" do
       it "Getting user details from invitation all having user_id" do
-    		owner = FactoryGirl.create(:user)
-    		account = Account.create(account_name: "Maropost" , user_id: owner.id)
-    		member = FactoryGirl.create(:user)
-    		invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
-    		invitations = Invitation.all
-    		usr = []
-        usr << member
-    		usrs = Account.find_all_invited_members_by_invitations(invitations)
-    		expect(usrs).to eq(usr)
-    	end
-      
+         owner = @owner
+         account = @owner_account
+         member = @member
+         invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+         usr = []
+         usr << member
+         usrs = @owner_account.find_all_invited_members_by_invitations
+         expect(usrs).to eq(usr)
+      end
       #failure case
-       it "not getting user details because invitations are not present" do
-         owner = FactoryGirl.create(:user)
-         account = Account.create(account_name: "Maropost" , user_id: owner.id)
-         invit = []         
-         usrs = Account.find_all_invited_members_by_invitations(invit)
-         expect(usrs).to eq([])
-       end
-       #getting users who have 
-       it "invitations are present with and without user_id" do
-        owner = FactoryGirl.create(:user)
-        account = Account.create(account_name: "Maropost" , user_id: owner.id)
-        member = FactoryGirl.create(:user)
-        invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
-        invitation2 = Invitation.create(account_id: account.id, user_email: "abc@gmail.com", key: "1f638b18fd1946a0e7274363b23fdbf98f8afdbfdb")
-        usr = []
-        usr << member
-        invitations = Invitation.all
-        usrs = Account.find_all_invited_members_by_invitations(invitations)
-        expect(usrs).to eq(usr)   
-       end
+      it "not getting user details because invitations are not present" do
+        usrs = @owner_account.find_all_invited_members_by_invitations
+        expect(usrs).to eq([])
+      end
+
+          #getting users who have 
+      it "invitations are present with and without user_id" do
+         owner = @owner
+         account = @owner_account
+         member = @member
+         invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+         invitation2 = Invitation.create(account_id: account.id, user_email: "abc@gmail.com", key: "1f638b18fd1946a0e7274363b23fdbf98f8afdbfdb")
+         usr = []
+         usr << member
+         invitations = Invitation.all
+         usrs = @owner_account.find_all_invited_members_by_invitations
+         expect(usrs).to eq(usr)   
+      end
     end
+
+
+    #Checking whether current_user's teams(myteams) available or not
+    describe ".find_myteam_by_account(account, owner.id)" do
+      it "Getting current_user teams" do
+         owner = @owner
+         account = @owner_account
+         member = @member
+         invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+           @team = []
+           @team << Team.create(account_id: account.id, owner_id: owner.id, name: "Developer")
+          team = @owner_account.find_myteam_by_account(owner.id)
+          expect(@team).to eq(team)
+      end
+      #failure cases
+      it "should return an empty object if there are no teams" do
+          teams = []
+          returned_teams = @owner_account.find_myteam_by_account(@owner)
+          expect(teams).to eq(returned_teams)
+      end
+      it "should return an empty object if the team is created by member in owner account" do
+       teams = []
+       team =  (create :team , owner_id: @member.id , account_id: @owner_account.id)
+       returned_teams = @owner_account.find_myteam_by_account(@owner)
+       expect(teams).to eq(returned_teams)
+      end
+      it "should return a team object if the team is ceeated by owner in member account" do
+       teams = []
+       teams  << (create :team , owner_id: @owner.id , account_id: @member_account.id)
+       returned_teams = @member_account.find_myteam_by_account(@owner)
+       expect(teams).to eq(returned_teams)
+      end
+    end
+
+
+     
+#     context '.my_teams' do
+#     it "should return own teams of individual account" do
+#       teams = []
+#       teams << (create :team , user_id: @owner.id , account_id: @owner_account.id)
+#       returned_teams = @owner_account.my_teams(@owner)
+#       expect(teams).to eq(returned_teams)
+#     end
+#     it "should return an empty object if there are no teams" do
+#       teams = []
+#       returned_teams = @owner_account.my_teams(@owner)
+#       expect(teams).to eq(returned_teams)
+#     end
+#     it "should return an empty object if the team is ceeated by member in owner account" do
+#       teams = []
+#       team =  (create :team , user_id: @member.id , account_id: @owner_account.id)
+#       returned_teams = @owner_account.my_teams(@owner)
+#       expect(teams).to eq(returned_teams)
+#     end
+#     it "should return a team object if the team is ceeated by owner in member account" do
+#       teams = []
+#       teams  << (create :team , user_id: @owner.id , account_id: @member_account.id)
+#       returned_teams = @member_account.my_teams(@owner)
+#       expect(teams).to eq(returned_teams)
+#     end
+#   end
+# end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+     #Checking whether current_user getting other teams(created by other users) or not
+    describe ".find_myteam_by_account(account, owner.id)" do
+      it "Getting current_user's other_teams" do
+        owner = @owner
+        account = @owner_account
+        member = @member
+        invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+          @team = []
+          @team << Team.create(account_id: account.id, owner_id: owner.id, name: "Developer")
+        @other_team = []
+        @other_team << Team.create(account_id: account.id, owner_id: member.id, name: "Tester" )
+        @team_user = []
+        @team_user << Teamuser.create( team_id: @other_team.first.id, user_id: member.id)
+        other_team = @owner_account.find_otherteam_by_account(@team, member)
+        expect(@other_team).to eq(other_team)
+      end
+    
+
+      
+      
+    end
+        #getting users who have 
+   #     it "invitations are present with and without user_id" do
+   #      owner = FactoryGirl.create(:user)
+   #      account = Account.create(account_name: "Maropost" , user_id: owner.id)
+   #      member = FactoryGirl.create(:user)
+   #      invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+   #      invitation2 = Invitation.create(account_id: account.id, user_email: "abc@gmail.com", key: "1f638b18fd1946a0e7274363b23fdbf98f8afdbfdb")
+   #      usr = []
+   #      usr << member
+   #      invitations = Invitation.all
+   #      usrs = Account.find_all_invited_members_by_invitations(invitations)
+   #      expect(usrs).to eq(usr)   
+   #     end
+   #  end
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+  # context '.users_in_accounts' do
+  #   it "should returns an user object from particular account" do
+  #     users_in_account = (create :invitation , account_id: @owner_account.id , user_id: @member.id)
+  #     users =[]
+  #     users << @owner
+  #     users << User.find_by(id: users_in_account.user_id)
+  #     returned_users = Account.users_in_accounts(@owner_account)
+  #     expect(users).to eq(returned_users)
+  #   end
+
+
+
+
+
+
+
+
+
+
+   #  #checking whether show page not getting owner name
+   #    it "when the current user is not owner" do
+   #      user = FactoryGirl.create(:user)
+   #      member = FactoryGirl.create(:user)
+   #      account = Account.create(user_id: user.id)
+   #      return_users = Account.find_user_by_account(account)
+   #      expect(return_users).not_to eq(member)
+   #    end
+   #  end
+
+   #  #Checking whether any invited user present in Invitation table through account_id
+   #  describe ".search_in_invitations_by_account_id" do
+   #    it "Testing whether any invited user present" do
+   #     	user = FactoryGirl.create(:user)
+   #      account = Account.create(account_name: "Maropost" , user_id: user.id)
+   #      invitation = Invitation.create(account_id: account.id, user_id: "2", user_email: "gurjot21@gmail.com", key: "1f638b181946a0e7274363b929123fdbf98f8a29")
+  	#   	@invitations = Invitation.where(account_id: account.id)
+  	# 	  invitations = Account.search_in_invitations_by_account_id(account)
+  	#   	expect(@invitations).to eq(invitations)
+  	#   end
+
+   #    #checking when invitations are not present
+   #     it "Testing when invited user is not present" do  
+   #       owner = FactoryGirl.create(:user)
+   #       account = Account.create(account_name: "Maropost" , user_id: owner.id)
+   #       another_owner = FactoryGirl.create(:user)
+   #       another_owner_account = Account.create(account_name: "Flipkart" , user_id: another_owner.id)
+   #       invitation = Invitation.create(account_id: account.id, user_id: "2", user_email: "gurjot21@gmail.com", key: "aaaaaa8b18")
+   #       invitation = Invitation.create(account_id: another_owner_account.id, user_id: "3", user_email: "gj31@gmail.com", key: "1f638b18194")
+   #       @invitations = Invitation.where(account_id: another_owner_account.id)
+   #       invitations = Account.search_in_invitations_by_account_id(account)
+   #       expect(@invitations).not_to eq(invitations)
+   #     end
+   #  end
+
+
+   #  #checking when invited user not present in Invitation table
+  
+   #    it "Testing whether any invited user present" do
+   #    user = FactoryGirl.create(:user)
+   #    account = Account.create(account_name: "Maropost" , user_id: user.id)
+   #    invitation = Invitation.create(account_id: account.id, user_id: "2", user_email: "gurjot21@gmail.com", key: "1f638b181946a0e7274363b929123fdbf98f8a29")
+   #    @invitations = Invitation.where(account_id: account.id)
+   #    invitations = Account.search_in_invitations_by_account_id(account)
+   #    expect(@invitations).to eq(invitations)
+   #  end
+
+
+
+
+
+
+   #  #Checking whether getting user details or not
+  	# describe ".find_all_invited_members_by_invitations(invitations)" do
+   #    it "Getting user details from invitation all having user_id" do
+   #  		owner = FactoryGirl.create(:user)
+   #  		account = Account.create(account_name: "Maropost" , user_id: owner.id)
+   #  		member = FactoryGirl.create(:user)
+   #  		invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+   #  		invitations = Invitation.all
+   #  		usr = []
+   #      usr << member
+   #  		usrs = Account.find_all_invited_members_by_invitations(invitations)
+   #  		expect(usrs).to eq(usr)
+   #  	end
+      
+   #    #failure case
+   #     it "not getting user details because invitations are not present" do
+   #       owner = FactoryGirl.create(:user)
+   #       account = Account.create(account_name: "Maropost" , user_id: owner.id)
+   #       invit = []         
+   #       usrs = Account.find_all_invited_members_by_invitations(invit)
+   #       expect(usrs).to eq([])
+   #     end
+   #     #getting users who have 
+   #     it "invitations are present with and without user_id" do
+   #      owner = FactoryGirl.create(:user)
+   #      account = Account.create(account_name: "Maropost" , user_id: owner.id)
+   #      member = FactoryGirl.create(:user)
+   #      invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+   #      invitation2 = Invitation.create(account_id: account.id, user_email: "abc@gmail.com", key: "1f638b18fd1946a0e7274363b23fdbf98f8afdbfdb")
+   #      usr = []
+   #      usr << member
+   #      invitations = Invitation.all
+   #      usrs = Account.find_all_invited_members_by_invitations(invitations)
+   #      expect(usrs).to eq(usr)   
+   #     end
+   #  end
 
 	  
 
-    #Checking whether current_user's teams(myteams) available or not
-  	describe ".find_myteam_by_account(account, owner.id)" do
-      it "Getting current_user teams" do
-    		owner = FactoryGirl.create(:user)
-    		account = Account.create(account_name: "Maropost" , user_id: owner.id)
-    		member = FactoryGirl.create(:user)
-    		invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
-    	  	@team = []
-    	  	@team << Team.create(account_id: account.id, owner_id: owner.id, name: "Developer")
-    		team = Account.find_myteam_by_account(account, owner.id)
-    	    expect(@team).to eq(team)
-    	end
-    end
-      #failure case
-      # it "" do 
-      # end
+   #  #Checking whether current_user's teams(myteams) available or not
+  	# describe ".find_myteam_by_account(account, owner.id)" do
+   #    it "Getting current_user teams" do
+   #  		owner = FactoryGirl.create(:user)
+   #  		account = Account.create(account_name: "Maropost" , user_id: owner.id)
+   #  		member = FactoryGirl.create(:user)
+   #  		invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+   #  	  	@team = []
+   #  	  	@team << Team.create(account_id: account.id, owner_id: owner.id, name: "Developer")
+   #  		team = Account.find_myteam_by_account(account, owner.id)
+   #  	    expect(@team).to eq(team)
+   #  	end
+   #  end
+   #    #failure case
+   #    # it "" do 
+   #    # end
 
 
 
-  	#Checking whether current_user getting other teams(created by other users) or not
-  	it "Getting current_user's other_teams" do
-  		owner = FactoryGirl.create(:user)
-  		account = Account.create(account_name: "Maropost" , user_id: owner.id)
-  		member = FactoryGirl.create(:user)
-  		invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
-  	  	@team = []
-  	  	@team << Team.create(account_id: account.id, owner_id: owner.id, name: "Developer")
-  	 	@other_team = []
-  	 	@other_team << Team.create(account_id: account.id, owner_id: member.id, name: "Tester" )
-  	 	@team_user = []
-  	 	@team_user << Teamuser.create( team_id: @other_team.first.id, user_id: member.id)
-  	 	other_team = Account.find_otherteam_by_account(account, @team, member)
-  	 	expect(@other_team).to eq(other_team)
-  	end
+  	# #Checking whether current_user getting other teams(created by other users) or not
+  	# it "Getting current_user's other_teams" do
+  	# 	owner = FactoryGirl.create(:user)
+  	# 	account = Account.create(account_name: "Maropost" , user_id: owner.id)
+  	# 	member = FactoryGirl.create(:user)
+  	# 	invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+  	#   	@team = []
+  	#   	@team << Team.create(account_id: account.id, owner_id: owner.id, name: "Developer")
+  	#  	@other_team = []
+  	#  	@other_team << Team.create(account_id: account.id, owner_id: member.id, name: "Tester" )
+  	#  	@team_user = []
+  	#  	@team_user << Teamuser.create( team_id: @other_team.first.id, user_id: member.id)
+  	#  	other_team = Account.find_otherteam_by_account(account, @team, member)
+  	#  	expect(@other_team).to eq(other_team)
+  	# end
 
 
 
