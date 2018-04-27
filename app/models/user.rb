@@ -12,13 +12,9 @@ class User < ApplicationRecord
       ac = User.find_by_email(email)
     return ac 
   end
- 
-
-	after_create :create_user 
- 	
-  private
+  after_create :create_user 
+ 	private
  	def create_user 
- 		
  		if key_for_invitation.present?
  			@invitation = Invitation.where("key = ?", key_for_invitation).update(user_id: self.id)
  		else

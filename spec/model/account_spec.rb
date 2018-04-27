@@ -70,116 +70,72 @@ RSpec.describe Account, type: :model do
       end
       #failure cases
       it "should return an empty object if there are no teams" do
-          teams = []
-          returned_teams = @owner_account.find_myteam_by_account(@owner)
-          expect(teams).to eq(returned_teams)
+          @teams = []
+          teams = @owner_account.find_myteam_by_account(@owner)
+          expect(@teams).to eq(teams)
       end
       it "should return an empty object if the team is created by member in owner account" do
-       teams = []
-       team =  (create :team , owner_id: @member.id , account_id: @owner_account.id)
-       returned_teams = @owner_account.find_myteam_by_account(@owner)
-       expect(teams).to eq(returned_teams)
+       @teams = []
+       @team =  (create :team , owner_id: @member.id , account_id: @owner_account.id)
+       teams = @owner_account.find_myteam_by_account(@owner)
+       expect(@teams).to eq(teams)
       end
       it "should return a team object if the team is ceeated by owner in member account" do
-       teams = []
-       teams  << (create :team , owner_id: @owner.id , account_id: @member_account.id)
-       returned_teams = @member_account.find_myteam_by_account(@owner)
-       expect(teams).to eq(returned_teams)
+       @teams = []
+       @teams  << (create :team , owner_id: @owner.id , account_id: @member_account.id)
+       teams = @member_account.find_myteam_by_account(@owner)
+       expect(@teams).to eq(teams)
       end
     end
-
-
-     
-#     context '.my_teams' do
-#     it "should return own teams of individual account" do
-#       teams = []
-#       teams << (create :team , user_id: @owner.id , account_id: @owner_account.id)
-#       returned_teams = @owner_account.my_teams(@owner)
-#       expect(teams).to eq(returned_teams)
-#     end
-#     it "should return an empty object if there are no teams" do
-#       teams = []
-#       returned_teams = @owner_account.my_teams(@owner)
-#       expect(teams).to eq(returned_teams)
-#     end
-#     it "should return an empty object if the team is ceeated by member in owner account" do
-#       teams = []
-#       team =  (create :team , user_id: @member.id , account_id: @owner_account.id)
-#       returned_teams = @owner_account.my_teams(@owner)
-#       expect(teams).to eq(returned_teams)
-#     end
-#     it "should return a team object if the team is ceeated by owner in member account" do
-#       teams = []
-#       teams  << (create :team , user_id: @owner.id , account_id: @member_account.id)
-#       returned_teams = @member_account.my_teams(@owner)
-#       expect(teams).to eq(returned_teams)
-#     end
-#   end
-# end
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-     #Checking whether current_user getting other teams(created by other users) or not
-    describe ".find_myteam_by_account(account, owner.id)" do
+    #Checking whether current_user getting other teams(created by other users) or not
+    describe ".find_otherteams_by_account(account, owner.id)" do
       it "Getting current_user's other_teams" do
-        owner = @owner
-        account = @owner_account
-        member = @member
-        invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
+        invitation = Invitation.create(account_id: @owner_account.id, user_id: @member.id, user_email: @member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
           @team = []
-          @team << Team.create(account_id: account.id, owner_id: owner.id, name: "Developer")
+          @team << Team.create(account_id: @owner_account.id, owner_id: @owner.id, name: "Developer")
         @other_team = []
-        @other_team << Team.create(account_id: account.id, owner_id: member.id, name: "Tester" )
+        @other_team << Team.create(account_id: @owner_account.id, owner_id: @member.id, name: "Tester" )
         @team_user = []
-        @team_user << Teamuser.create( team_id: @other_team.first.id, user_id: member.id)
-        other_team = @owner_account.find_otherteam_by_account(@team, member)
+        @team_user << Teamuser.create( team_id: @other_team.first.id, user_id: @member.id)
+        other_team = @owner_account.find_otherteam_by_account(@team, @member)
         expect(@other_team).to eq(other_team)
       end
+      it "should return an empty object if there are no other_teams" do
+          @team = []
+          @other_team = []
+          other_team = @owner_account.find_otherteam_by_account(@team, @owner)
+          expect(@other_team).to eq(other_team)
+      end
+    end
+
     
 
-      
-      
+
+
+
+
+    
+
+    #index page method
+    describe ".all_accounts_on_index(current_user)" do
+      it "Getting all accounts that are created by current_user" do
+        @accounts = []
+        @accounts << @owner_account
+        accounts = Account.all_accounts_on_index(@owner)
+        expect(@accounts).to eq(accounts)
+      end
+
+      it "Getting all accounts on index page, current_user added as a member" do
+       invitation = Invitation.create(account_id: @member_account.id, user_id: @owner.id, user_email: @owner.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29") 
+       @accounts = []
+       @accounts << @owner_account
+       @accounts << @member_account
+       accounts = Account.all_accounts_on_index(@owner)
+       expect(@accounts).to eq(accounts)    
+      end
     end
-        #getting users who have 
-   #     it "invitations are present with and without user_id" do
-   #      owner = FactoryGirl.create(:user)
-   #      account = Account.create(account_name: "Maropost" , user_id: owner.id)
-   #      member = FactoryGirl.create(:user)
-   #      invitation = Invitation.create(account_id: account.id, user_id: member.id, user_email: member.email, key: "1f638b18fd1946a0e7274363b929123fdbf98f8a29")
-   #      invitation2 = Invitation.create(account_id: account.id, user_email: "abc@gmail.com", key: "1f638b18fd1946a0e7274363b23fdbf98f8afdbfdb")
-   #      usr = []
-   #      usr << member
-   #      invitations = Invitation.all
-   #      usrs = Account.find_all_invited_members_by_invitations(invitations)
-   #      expect(usrs).to eq(usr)   
-   #     end
-   #  end
+
+end
 
 
 
@@ -345,7 +301,7 @@ RSpec.describe Account, type: :model do
 
 
 
-end
+
 	# context 'validations' do
   	#   it { should validate_presence_of :email }
   	#   it { should validate_presence_of :password }

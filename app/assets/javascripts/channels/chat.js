@@ -5,7 +5,7 @@
     messages = $("#messages").attr('data-team-id');
     if(App.chat){
       App.cable.subscriptions.remove(App.chat);
-    }
+    } 
       if ($(".teams.show").length > 0)
         
          App.chat = App.cable.subscriptions.create({

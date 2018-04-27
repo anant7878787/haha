@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180417123643) do
+ActiveRecord::Schema.define(version: 20180427054844) do
 
   create_table "accounts", force: :cascade do |t|
     t.string "account_name"
@@ -20,6 +20,15 @@ ActiveRecord::Schema.define(version: 20180417123643) do
     t.datetime "updated_at", null: false
     t.index ["user_id", "account_name"], name: "index_accounts_on_user_id_and_account_name", unique: true
     t.index ["user_id"], name: "index_accounts_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.string "commentable_type"
+    t.integer "commentable_id"
+    t.integer "user_id"
+    t.text "body"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "invitations", force: :cascade do |t|

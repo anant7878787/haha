@@ -4,7 +4,9 @@ class InvitationsController < ApplicationController
 	def get_user_mail 
          
         @email = valid_params[:user_email]
-		@account_id = valid_params[:account_id]
+		@account_id = valid_params[:account_id] 
+        @account = Account.find_by(id: @account_id)
+        authorize @account, :send_mail?
         check_user = User.find_by(email: @email)
         @key = Digest::SHA1.hexdigest([@account_id, Time.now, rand].join)
         if check_user == nil

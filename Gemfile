@@ -40,7 +40,9 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.7'
   gem 'factory_girl_rails', '~> 4.5.0'
   gem 'capybara', '~> 2.5'
-   gem 'selenium-webdriver'
+  gem 'selenium-webdriver'
+  gem 'simplecov'
+  gem 'pundit', '~> 1.1'
 end
 
 group :development do
@@ -59,7 +61,6 @@ gem 'cocoon', '~> 1.2', '>= 1.2.11'
 gem 'bootstrap', '~> 4.0.0'
 gem 'jquery-rails', '~> 4.3', '>= 4.3.1'
 gem 'popper_js', '~> 1.12', '>= 1.12.9'
-gem 'simplecov'
 
 group :test do
   gem 'faker', '~> 1.6.1'

@@ -4,26 +4,25 @@
     <h3><strong>Your Account</strong></h3>
   </div>
   <% if check_for_owner(current_user.id, @account) =="owner" %>
-  <div class="col-md-3">
-    
-      <h3><strong><%=@owner_name.name%>(OWNER)</strong></h3>
-    </div> 
-    <div class="col-md-3">
-      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style = "float: right;">Add Users</button>
-    </div> 
-    
-  <div class="col-md-3">
-   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
-  </div>
+      <div class="col-md-3"> 
+        <h3><strong><%=@owner_name.name%>(OWNER)</strong></h3>
+      </div>
+      <div class="col-md-3">
+        <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
+      </div>
    <%else%>  
   
-   <div class="col-md-4">
-      <h3><strong>You are member</strong></h3>
+   <div class="col-md-3">
+      <h3><strong>member</strong></h3>
     </div>
      <div class="col-md-3">
    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal2" style = "float: right;">Add Team</button> 
   </div>
   <%end%>
+  
+    <div class="col-md-3">
+      <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" style = "float: right;">Add Users</button>
+    </div> 
 </div>
   
 
@@ -73,10 +72,19 @@
       <a href="<%=account_team_path(@account.id,om.id)%>" class="btn btn-success" style = " float: right">Your team</a>
     </div> 
   </div> 
-<%end%>    
-  
-  
+<%end%>  
+<br/>
+<h3><strong>Comments-</strong></h3>  
+<div class=" jumbotron border border-secondary">
+<%= render partial: "comments/comments", locals: {commentable: @account} %>
 
+<%= form_for :comment , url: comments_path(account_id: @account.id) do |f| %>
+            <div class="form-group">
+                <%= f.text_area :body, class: "form-control", placeholder: "Add a comment" %>
+            </div>
+            <%= f.submit class: "btn btn-primary" %>
+        <% end %>
+</div> 
 <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog">
     
